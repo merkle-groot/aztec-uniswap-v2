@@ -27,7 +27,9 @@ pub contract UniV2Pair {
     fn constructor(liquidity_token: AztecAddress, _nonce: Field) {
         self.storage.counter.write(0);
         self.storage.lp_address.initialize(liquidity_token);
-        self.call::<14, 2, ()>(Token::at(self.storage.lp_address.read()).mint_to_public(self.address, 1000 as u128));
+        let mint_call = Token::at(self.storage.lp_address.read())
+        .mint_to_public(self.address, 1000 as u128);
+        self.call(mint_call);
     }
 
     #[external("public")]
